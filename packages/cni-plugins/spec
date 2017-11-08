@@ -1,0 +1,8 @@
+---
+name: cni-plugins
+
+dependencies:
+  - golang
+
+files:
+  - github.com/containernetworking/plugins/**/*

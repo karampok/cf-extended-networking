@@ -1,0 +1,6 @@
+[submodule "src/github.com/containernetworking/plugins"]
+	path = src/github.com/containernetworking/plugins
+	url = https://github.com/containernetworking/plugins.git
+[submodule "src/github.com/containernetworking/cni"]
+	path = src/github.com/containernetworking/cni
+	url = https://github.com/containernetworking/cni.git

@@ -1,0 +1,15 @@
+---
+name: runc-cni
+
+dependencies:
+  - golang
+
+files:
+  - garden-external-networker/**/*.go # gosub
+  - github.com/containernetworking/cni/scripts/*
+  - github.com/containernetworking/cni/**/*.go
+  - code.cloudfoundry.org/garden/*.go
+  - golang.org/x/sys/unix/*.go # gosub
+  - golang.org/x/sys/unix/*.s # gosub
+  - lib/filelock/*.go # gosub
+  - lib/serial/*.go # gosub
