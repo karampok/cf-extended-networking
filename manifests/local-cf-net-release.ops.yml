@@ -1,0 +1,6 @@
+- type: replace
+  path: /releases/name=cf-extended-networking
+  value:
+   name: cf-extended-networking
+   version: create
+   url: file://.

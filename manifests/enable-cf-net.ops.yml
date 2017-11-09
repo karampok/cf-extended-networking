@@ -1,0 +1,29 @@
+- type: replace
+  path: /releases/-
+  value:
+    name: cf-extended-networking
+    version: latest
+
+- type: replace
+  path: /instance_groups/0/jobs/name=garden/properties/garden/network_plugin?
+  value: /var/vcap/packages/runc-cni/bin/garden-external-networker
+
+- type: replace
+  path: /instance_groups/0/jobs/name=garden/properties/garden/network_plugin_extra_args?
+  value: ["--configFile","/var/vcap/jobs/garden-cni/config/adapter.json"]
+
+- type: replace
+  path: /instance_groups/0/jobs/-
+  value:
+    name: garden-cni
+    release: cf-extended-networking
+    properties:
+      cf_networking:
+        cni_plugin_dir: /var/vcap/packages/bridge-cni/bin
+        cni_config_dir: /var/vcap/jobs/cni/config
+
+# - type: replace
+#   path: /instance_groups/0/jobs/-
+#   value:
+#     name: cni
+#     release: garden-runc

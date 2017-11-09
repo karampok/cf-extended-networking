@@ -4,3 +4,6 @@
 [submodule "src/github.com/containernetworking/cni"]
 	path = src/github.com/containernetworking/cni
 	url = https://github.com/containernetworking/cni.git
+[submodule "src/code.cloudfoundry.org/garden"]
+	path = src/code.cloudfoundry.org/garden
+	url = http://github.com/cloudfoundry/garden.git
