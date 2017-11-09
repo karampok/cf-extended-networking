@@ -14,7 +14,7 @@ type cniLibrary interface {
 
 type CNIController struct {
 	CNIConfig      libcni.CNI
-	NetworkConfigs []*libcni.NetworkConfig
+	NetworkConfigs []*libcni.NetworkConfigList
 }
 
 func (c *CNIController) Up(namespacePath, handle string, metadata map[string]interface{}, legacyNetConf map[string]interface{}) (types.Result, error) {
@@ -36,12 +36,12 @@ func (c *CNIController) Up(namespacePath, handle string, metadata map[string]int
 			extraKeys["runtimeConfig"] = legacyNetConf
 		}
 
-		networkConfig, err = libcni.InjectConf(networkConfig, extraKeys)
-		if err != nil {
-			return nil, fmt.Errorf("adding extra data to CNI config: %s", err)
-		}
+		// networkConfig, err = libcni.InjectConf(networkConfig, extraKeys)
+		// if err != nil {
+		// 	return nil, fmt.Errorf("adding extra data to CNI config: %s", err)
+		// }
 
-		result, err = c.CNIConfig.AddNetwork(networkConfig, runtimeConfig)
+		result, err = c.CNIConfig.AddNetworkList(networkConfig, runtimeConfig)
 		if err != nil {
 			return nil, fmt.Errorf("add network failed: %s", err)
 		}
@@ -59,7 +59,7 @@ func (c *CNIController) Down(namespacePath, handle string) error {
 			IfName:      fmt.Sprintf("eth%d", i),
 		}
 
-		err = c.CNIConfig.DelNetwork(networkConfig, runtimeConfig)
+		err = c.CNIConfig.DelNetworkList(networkConfig, runtimeConfig)
 		if err != nil {
 			return fmt.Errorf("del network failed: %s", err)
 		}
