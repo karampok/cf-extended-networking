@@ -6,3 +6,4 @@ dependencies:
 
 files:
   - github.com/containernetworking/plugins/**/*
+  - github.com/containernetworking/cni/**/*

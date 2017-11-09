@@ -1,0 +1,11 @@
+---
+name: cni-configs
+
+templates:
+  10-bridge.conf.erb: config/10-bridge.conf
+  30-chained.conflist.erb: config/30-chained.conflist
+
+packages:
+  - cni-plugins
+
+properties: {}

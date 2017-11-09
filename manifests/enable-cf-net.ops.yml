@@ -19,11 +19,11 @@
     release: cf-extended-networking
     properties:
       cf_networking:
-        cni_plugin_dir: /var/vcap/packages/bridge-cni/bin
-        cni_config_dir: /var/vcap/jobs/cni/config
+        cni_plugin_dir: /var/vcap/packages/cni-plugins/bin
+        cni_config_dir: /var/vcap/jobs/cni-configs/config
 
-# - type: replace
-#   path: /instance_groups/0/jobs/-
-#   value:
-#     name: cni
-#     release: garden-runc
+- type: replace
+  path: /instance_groups/0/jobs/-
+  value:
+    name: cni-configs
+    release: cf-extended-networking
