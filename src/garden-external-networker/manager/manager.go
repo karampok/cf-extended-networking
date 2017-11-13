@@ -70,6 +70,13 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 	}
 
 	mappedPorts := []garden.PortMapping{}
+	type PortMapEntry struct {
+		HostPort      uint32 `json:"hostPort"`
+		ContainerPort uint32 `json:"containerPort"`
+		Protocol      string `json:"protocol"`
+		HostIP        string `json:"hostIP,omitempty"`
+	}
+	mPorts := []PortMapEntry{}
 	for i := range inputs.NetIn {
 		if inputs.NetIn[i].HostPort == 0 {
 			hostPort, err := m.PortAllocator.AllocatePort(containerHandle, int(inputs.NetIn[i].HostPort))
@@ -83,6 +90,13 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 			HostPort:      inputs.NetIn[i].HostPort,
 			ContainerPort: inputs.NetIn[i].ContainerPort,
 		})
+
+		mPorts = append(mPorts, PortMapEntry{
+			HostPort:      inputs.NetIn[i].HostPort,
+			ContainerPort: inputs.NetIn[i].ContainerPort,
+			Protocol:      "tcp",
+		})
+
 	}
 
 	result, err := m.CNIController.Up(
@@ -90,7 +104,7 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 		containerHandle,
 		inputs.Properties,
 		map[string]interface{}{
-			"portMappings": inputs.NetIn,
+			"portMappings": mPorts,
 			"netOutRules":  inputs.NetOut,
 		},
 	)

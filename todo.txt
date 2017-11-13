@@ -1,0 +1,1 @@
+https://banck.net/2017/03/deploying-cloud-foundry-virtualbox-using-bosh-cli-v2/

@@ -23,18 +23,19 @@ func (c *CNIController) Up(namespacePath, handle string, metadata map[string]int
 
 	for i, networkConfig := range c.NetworkConfigs {
 		runtimeConfig := &libcni.RuntimeConf{
-			ContainerID: handle,
-			NetNS:       namespacePath,
-			IfName:      fmt.Sprintf("eth%d", i),
+			ContainerID:    handle,
+			NetNS:          namespacePath,
+			IfName:         fmt.Sprintf("eth%d", i),
+			CapabilityArgs: legacyNetConf,
 		}
 
-		extraKeys := map[string]interface{}{}
-		if len(metadata) > 0 {
-			extraKeys["metadata"] = metadata
-		}
-		if len(legacyNetConf) > 0 {
-			extraKeys["runtimeConfig"] = legacyNetConf
-		}
+		// extraKeys := map[string]interface{}{}
+		// if len(metadata) > 0 {
+		// 	extraKeys["metadata"] = metadata
+		// }
+		// if len(legacyNetConf) > 0 {
+		// 	extraKeys["runtimeConfig"] = legacyNetConf
+		// }
 
 		// networkConfig, err = libcni.InjectConf(networkConfig, extraKeys)
 		// if err != nil {
