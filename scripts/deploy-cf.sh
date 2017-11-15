@@ -11,9 +11,9 @@ mkdir -p "$director_dir"
 deployment_dir="$director_dir/cf"
 mkdir -p "$deployment_dir"
 
-# STEMCELL_VERSION=$(bosh int ~/workspace/cf-deployment/cf-deployment.yml --path /stemcells/alias=default/version)
-# bosh upload-stemcell https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent?v=$STEMCELL_VERSION
-# bosh -n update-cloud-config "$cf_deployment"/iaas-support/bosh-lite/cloud-config.yml
+STEMCELL_VERSION=$(bosh int ~/workspace/cf-deployment/cf-deployment.yml --path /stemcells/alias=default/version)
+bosh upload-stemcell https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent?v=$STEMCELL_VERSION
+bosh -n update-cloud-config "$cf_deployment"/iaas-support/bosh-lite/cloud-config.yml
 # bosh update-runtime-config -n ~//workspace/bosh-deployment/runtime-configs/dns.yml
 bosh -n -d cf deploy \
   -o "$cf_deployment"/operations/bosh-lite.yml \

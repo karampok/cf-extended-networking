@@ -1,0 +1,42 @@
+- path: /releases/name=cf-mysql/url
+  type: replace
+  value: https://storage.googleapis.com/cf-deployment-compiled-releases/cf-mysql-36.8.0-ubuntu-trusty-3468.5-20171107-013212-236937877.tgz
+- path: /releases/name=cf-mysql/version
+  type: replace
+  value: 36.8.0
+- path: /releases/name=cf-mysql/sha1
+  type: replace
+  value: 5b1e09226d03182a92ad72327c70a65d45a9f3e4
+- path: /releases/name=cf-networking/url
+  type: replace
+  value: https://storage.googleapis.com/cf-deployment-compiled-releases/cf-networking-1.8.1-ubuntu-trusty-3468.5-20171107-010630-062063701.tgz
+- path: /releases/name=cf-networking/version
+  type: replace
+  value: 1.8.1
+- path: /releases/name=cf-networking/sha1
+  type: replace
+  value: 5dd15c7658f7262d327aa8467fbed46148e4a31c
+- path: /releases/name=garden-runc/url
+  type: replace
+  value: https://storage.googleapis.com/cf-deployment-compiled-releases/garden-runc-1.9.6-ubuntu-trusty-3468.5-20171107-180419-135350911.tgz
+- path: /releases/name=garden-runc/version
+  type: replace
+  value: 1.9.6
+- path: /releases/name=garden-runc/sha1
+  type: replace
+  value: 4958d34100efd45f8fe0c2ab47ea1bdcc7052fb2
+- path: /releases/name=cf-mysql/stemcell?
+  type: replace
+  value:
+    os: ubuntu-trusty
+    version: "3468.5"
+- path: /releases/name=cf-networking/stemcell?
+  type: replace
+  value:
+    os: ubuntu-trusty
+    version: "3468.5"
+- path: /releases/name=garden-runc/stemcell?
+  type: replace
+  value:
+    os: ubuntu-trusty
+    version: "3468.5"

@@ -1,0 +1,83 @@
+- type: replace
+  path: /releases/-
+  value:
+    name: postgres
+    sha1: b37916b709fb45ac7de3e195456301cb01a1ae22
+    url: https://bosh.io/d/github.com/cloudfoundry/postgres-release?v=21
+    version: "21"
+- type: replace
+  path: /releases/-
+  value:
+    name: cf-networking
+    sha1: 7b99ebed8fcbf556e633452848002212ce707abb
+    url: https://bosh.io/d/github.com/cloudfoundry-incubator/cf-networking-release?v=1.8.0
+    version: 1.8.0
+- type: replace
+  path: /instance_groups/-
+  value:
+    name: postgres
+    instances: 1
+    vm_type: ((vm))
+    networks:
+    - name: ((network))
+    azs: [((az))]
+    stemcell: trusty
+    jobs:
+    - name: postgres
+      properties:
+        databases:
+          databases:
+          - citext: false
+            name: network_connectivity
+            tag: networkconnectivity
+          db_scheme: postgres
+          port: 5524
+          roles:
+          - name: network_connectivity
+            password: ((network_connectivity_database_password))
+            tag: admin
+      release: postgres
+    - name: silk-controller
+      release: cf-networking
+      properties:
+        cf_networking:
+          silk_controller:
+            ca_cert: ((silk_controller.ca))
+            server_cert: ((silk_controller.certificate))
+            server_key: ((silk_controller.private_key))
+            database:
+              type: mysql
+              username: network_connectivity
+              password: ((network_connectivity_database_password))
+              host: sql-db.service.cf.internal
+              port: 3306
+              name: network_connectivity
+          silk_daemon:
+            ca_cert: ((silk_daemon.ca))
+            client_cert: ((silk_daemon.certificate))
+            client_key: ((silk_daemon.private_key))
+# - type: replace
+#   path: /instance_groups/name=diego-api/jobs/name=silk-controller/properties/cf_networking/silk_controller/database
+#   value:
+#     host: sql-db.service.cf.internal
+#     name: network_connectivity
+#     password: ((network_connectivity_database_password))
+#     port: 5524
+#     type: postgres
+#     username: network_connectivity
+
+# - type: replace
+#   path: /variables/-
+#   value:
+#     name: network_connectivity_database_password
+#     type: password
+- type: replace
+  path: /variables/-
+  value:
+    name: silk_controller
+    options:
+      ca: silk_ca
+      common_name: silk-controller.service.cf.internal
+      extended_key_usage:
+      - server_auth
+    type: certificate

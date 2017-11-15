@@ -8,6 +8,11 @@ networks:
   - range: 10.244.0.0/24
     gateway: 10.244.0.1
     az: lite
+    static: 10.244.0.10
+
+disk_types:
+- disk_size: 5024
+  name: 5GB
 
 azs:
 - name: lite

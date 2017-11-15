@@ -1,0 +1,136 @@
+---
+name: cf
+update:
+  canaries: 1
+  max_in_flight: 3
+  canary_watch_time: 1000-240000
+  update_watch_time: 1000-240000
+addons: []
+instance_groups:
+- name: singleton-database
+  migrated_from:
+  - name: mysql
+  azs: [((az))]
+  instances: 1
+  persistent_disk_type: 5GB
+  vm_type: ((vm))
+  stemcell: default
+  update:
+    serial: true
+  networks:
+  - name: ((network))
+  jobs:
+  - name: mysql
+    release: cf-mysql
+    properties:
+      network_name: default
+      cf_mysql:
+        mysql:
+          admin_password: "((cf_mysql_mysql_admin_password))"
+          port: 3306
+          binlog_enabled: false
+          cluster_health:
+            password: "((cf_mysql_mysql_cluster_health_password))"
+          galera_healthcheck:
+            db_password: "((cf_mysql_mysql_galera_healthcheck_password))"
+            endpoint_username: galera_healthcheck
+            endpoint_password: "((cf_mysql_mysql_galera_healthcheck_endpoint_password))"
+          seeded_databases:
+          - name: network_connectivity
+            username: network_connectivity
+            password: "((network_connectivity_database_password))"
+  - name: silk-controller
+    release: cf-networking
+    properties:
+      cf_networking:
+        silk_controller:
+          ca_cert: ((silk_controller.ca))
+          server_cert: ((silk_controller.certificate))
+          server_key: ((silk_controller.private_key))
+          database:
+            type: mysql
+            username: network_connectivity
+            password: ((network_connectivity_database_password))
+            host: localhost
+            port: 3306
+            name: network_connectivity
+
+- name: diego-cell
+  azs: [((az))]
+  instances: 2
+  vm_type: ((vm))
+  stemcell: default
+  networks:
+  - name: ((network))
+  jobs:
+  - name: garden
+    release: garden-runc
+    properties:
+      garden:
+        graph_cleanup_threshold_in_mb: 10240
+        listen_network: tcp
+        listen_address: 0.0.0.0:7777
+        debug_listen_address: 0.0.0.0:17013
+  - name: silk-daemon
+    release: cf-networking
+    properties:
+      cf_networking:
+        silk_controller:
+          hostname:  silkcontroller
+        silk_daemon:
+          ca_cert: ((silk_daemon.ca))
+          client_cert: ((silk_daemon.certificate))
+          client_key: ((silk_daemon.private_key))
+  - name: cni
+    release: cf-networking
+
+variables:
+- name: cf_mysql_mysql_admin_password
+  type: password
+- name: cf_mysql_mysql_galera_healthcheck_password
+  type: password
+- name: cf_mysql_mysql_cluster_health_password
+  type: password
+- name: cf_mysql_mysql_galera_healthcheck_endpoint_password
+  type: password
+- name: network_connectivity_database_password
+  type: password
+- name: silk_ca
+  type: certificate
+  options:
+    is_ca: true
+    common_name: silk-ca
+- name: silk_controller
+  type: certificate
+  options:
+    ca: silk_ca
+    common_name:  silkcontroller
+    alternative_names: []
+    extended_key_usage:
+    - server_auth
+- name: silk_daemon
+  type: certificate
+  options:
+    ca: silk_ca
+    common_name: silk-daemon
+    extended_key_usage:
+    - client_auth
+
+releases:
+- name: cf-mysql
+  url: https://bosh.io/d/github.com/cloudfoundry/cf-mysql-release?v=36.8.0
+  version: 36.8.0
+  sha1: b6ef2586c53c1b874f1aab0d42c0b94e9d601081
+- name: cf-networking
+  url: https://bosh.io/d/github.com/cloudfoundry/cf-networking-release?v=1.8.1
+  version: 1.8.1
+  sha1: adb6b04463c9e2a8340fdbb6216a361f341f1785
+- name: garden-runc
+  url: https://bosh.io/d/github.com/cloudfoundry/garden-runc-release?v=1.9.6
+  version: 1.9.6
+  sha1: 55fdcc0f2bda526f126d28827fbae7b21c6b0d1c
+
+stemcells:
+- alias: default
+  os: ubuntu-trusty
+  version: "3468.5"

@@ -23,10 +23,14 @@
     {
       "type": "portmap",
       "capabilities": {"portMappings": true},
-      "snat": false,
-      "conditionsV4": ["!", "-d", "192.0.2.0/24"],
-      "conditionsV6": ["!", "-d", "fc00::/7"]
-      }
+      "snat": false
+      },
+    {
+      "type":"diktyo",
+      "debug":true,
+      "capabilities": {"portMappings": true},
+      "debugDir": "/tmp/net-debug"
+    }
   ]
 }
 

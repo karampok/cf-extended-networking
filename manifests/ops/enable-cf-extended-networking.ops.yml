@@ -5,15 +5,15 @@
     version: latest
 
 - type: replace
-  path: /instance_groups/0/jobs/name=garden/properties/garden/network_plugin?
+  path: /instance_groups/name=diego-cell/jobs/name=garden/properties/garden/network_plugin?
   value: /var/vcap/packages/runc-cni/bin/garden-external-networker
 
 - type: replace
-  path: /instance_groups/0/jobs/name=garden/properties/garden/network_plugin_extra_args?
+  path: /instance_groups/name=diego-cell/jobs/name=garden/properties/garden/network_plugin_extra_args?
   value: ["--configFile","/var/vcap/jobs/garden-cni/config/adapter.json"]
 
 - type: replace
-  path: /instance_groups/0/jobs/-
+  path: /instance_groups/name=diego-cell/jobs/name=garden-cni
   value:
     name: garden-cni
     release: cf-extended-networking
@@ -23,7 +23,7 @@
         cni_config_dir: /var/vcap/jobs/cni-configs/config
 
 - type: replace
-  path: /instance_groups/0/jobs/-
+  path: /instance_groups/name=diego-cell/jobs/-
   value:
     name: cni-configs
     release: cf-extended-networking

@@ -1,4 +1,4 @@
-deployment: garden-runc-net
+deployment: silk-lite
 vm: container
 network: lite
 az: lite

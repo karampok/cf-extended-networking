@@ -1,0 +1,93 @@
+#https://github.com/cloudfoundry/cf-deployment/blob/0671b046cfc3e6c46abce5c7773f6eed454493f4/operations/experimental/use-cf-networking.yml
+- type: replace
+  path: /releases/-
+  value:
+    name: cf-networking
+    sha1: 2e3e25e3b1988afd6f7d2c20723ba54caa165b25
+    url: https://bosh.io/d/github.com/cloudfoundry-incubator/cf-networking-release?v=1.1.0
+    version: 1.1.0
+
+- type: replace
+  path: /instance_groups/name=mysql/jobs/name=mysql/properties/cf_mysql/mysql/seeded_databases/-
+  value:
+    name: network_connectivity
+    password: ((cf_mysql_mysql_seeded_databases_network_connectivity_password))
+    username: network_connectivity
+- type: replace
+  path: /instance_groups/name=diego-cell/jobs/-
+  value:
+    name: silk-daemon
+    properties:
+      cf_networking:
+        silk_daemon:
+          ca_cert: ((silk_daemon.ca))
+          client_cert: ((silk_daemon.certificate))
+          client_key: ((silk_daemon.private_key))
+    release: cf-networking
+- type: replace
+  path: /instance_groups/name=diego-cell/jobs/-
+  value:
+    name: silk-cni
+    release: cf-networking
+- type: replace
+  path: /instance_groups/name=diego-api/jobs/-
+  value:
+    consumes:
+      database:
+        from: db
+    name: silk-controller
+    properties:
+      cf_networking:
+        silk_controller:
+          ca_cert: ((silk_controller.ca))
+          database:
+            host: sql-db.service.cf.internal
+            name: network_connectivity
+            password: ((cf_mysql_mysql_seeded_databases_network_connectivity_password))
+            port: 3306
+            type: mysql
+            username: network_connectivity
+          server_cert: ((silk_controller.certificate))
+          server_key: ((silk_controller.private_key))
+        silk_daemon:
+          ca_cert: ((silk_daemon.ca))
+          client_cert: ((silk_daemon.certificate))
+          client_key: ((silk_daemon.private_key))
+    release: cf-networking
+- type: replace
+  path: /instance_groups/name=diego-api/jobs/name=consul_agent/properties?/consul/agent/services/silk-controller
+  value:
+    name: silk-controller
+- type: replace
+  path: /variables/-
+  value:
+    name: cf_mysql_mysql_seeded_databases_network_connectivity_password
+    type: password
+- type: replace
+  path: /variables/-
+  value:
+    name: silk_ca
+    options:
+      common_name: silk-ca
+      is_ca: true
+    type: certificate
+- type: replace
+  path: /variables/-
+  value:
+    name: silk_controller
+    options:
+      ca: silk_ca
+      common_name: silk-controller.service.cf.internal
+      extended_key_usage:
+      - server_auth
+    type: certificate
+- type: replace
+  path: /variables/-
+  value:
+    name: silk_daemon
+    options:
+      ca: silk_ca
+      common_name: silk-daemon
+      extended_key_usage:
+      - client_auth
+    type: certificate

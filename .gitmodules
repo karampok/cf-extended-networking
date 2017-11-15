@@ -7,3 +7,6 @@
 [submodule "src/code.cloudfoundry.org/garden"]
 	path = src/code.cloudfoundry.org/garden
 	url = http://github.com/cloudfoundry/garden.git
+[submodule "src/github.com/karampok/diktyo"]
+	path = src/github.com/karampok/diktyo
+	url = git@github.com:karampok/diktyo.git

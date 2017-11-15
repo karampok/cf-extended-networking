@@ -13,3 +13,4 @@ go install github.com/containernetworking/plugins/plugins/ipam/host-local
 go install github.com/containernetworking/plugins/plugins/ipam/host-local
 go install github.com/containernetworking/plugins/plugins/meta/portmap
 go install github.com/containernetworking/cni/plugins/test/noop
+go install github.com/karampok/diktyo
