@@ -1,5 +1,5 @@
 ---
-name: runc-cni
+name: garden-net
 
 dependencies:
   - golang

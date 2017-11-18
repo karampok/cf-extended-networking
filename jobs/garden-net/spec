@@ -1,12 +1,12 @@
 ---
-name: garden-cni
+name: garden-net
 
 templates:
   pre-start.erb: bin/pre-start
   adapter.json.erb: config/adapter.json
 
 packages:
-  - runc-cni
+  - garden-net
 
 properties:
   cf_networking.cni_plugin_dir:

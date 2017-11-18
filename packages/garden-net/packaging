@@ -10,4 +10,4 @@ export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
 
 go install garden-external-networker
 
-chmod u+s /var/vcap/packages/runc-cni/bin/garden-external-networker
+chmod u+s /var/vcap/packages/garden-net/bin/garden-external-networker

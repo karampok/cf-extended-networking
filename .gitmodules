@@ -10,3 +10,6 @@
 [submodule "src/github.com/karampok/diktyo"]
 	path = src/github.com/karampok/diktyo
 	url = git@github.com:karampok/diktyo.git
+[submodule "src/golang.org/x/sys"]
+	path = src/golang.org/x/sys
+	url = https://go.googlesource.com/sys
