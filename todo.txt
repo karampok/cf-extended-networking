@@ -3,4 +3,5 @@ https://banck.net/2017/03/deploying-cloud-foundry-virtualbox-using-bosh-cli-v2/
 1. Use diktyo to spin up containers
   - use chain
   - enable debug
+  - get the ip subnet from silk-daemon
   - re-use the bridge that exists???
