@@ -1,4 +1,15 @@
-{
+#!/bin/bash
+
+set -eu
+mkdir -p /var/vcap/data/cni-configs
+opt=$( curl -Lks  127.0.0.1:23954| python -m json.tool |grep overlay_subnet|awk  '{print $2}'  )
+if [ -z $opt ]; then
+  exit 1
+fi
+
+SUBNET="${opt//\"}"
+cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
+  {
   "cniVersion": "0.3.1",
   "name": "mynet",
   "plugins": [
@@ -6,11 +17,11 @@
         "type": "bridge",
         "bridge": "mynet0",
         "isGateway": true,
-        "ipMasq": true,
-        "hairpinMode": true,
+        "ipMasq": false,
+        "hairpinMode": false,
         "ipam": {
             "type": "host-local",
-            "subnet": "10.10.20.0/24",
+            "subnet": "$SUBNET",
             "routes": [
                 { "dst": "0.0.0.0/0" }
             ],
@@ -33,4 +44,4 @@
     }
   ]
 }
-
+EOF

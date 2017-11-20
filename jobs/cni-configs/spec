@@ -2,8 +2,7 @@
 name: cni-configs
 
 templates:
-  10-bridge.conf.erb: config/10-bridge.conf
-  30-chained.conflist.erb: config/30-chained.conflist
+  create-config.erb: bin/create-config
 
 packages:
   - cni-plugins

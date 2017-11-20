@@ -4,7 +4,7 @@ set -eu
 
 space_id="test-space-id"
 app_id="test-app-id"
-garden_server="10.244.0.2:7777"
+garden_server="10.244.0.3:7777"
 container_handle=""
 
 while getopts "t:s:a:h:" opt; do

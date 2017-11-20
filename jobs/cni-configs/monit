@@ -1,0 +1,2 @@
+check file cni-conflist with path /var/vcap/data/cni-configs/chained.conflist
+    if not exist then exec "/var/vcap/jobs/cni-configs/bin/create-config"
