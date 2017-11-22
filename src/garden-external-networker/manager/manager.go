@@ -1,10 +1,12 @@
 package manager
 
 import (
+	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
+	"os/exec"
 	"path/filepath"
 
 	"code.cloudfoundry.org/garden"
@@ -28,6 +30,19 @@ type mounter interface {
 type portAllocator interface {
 	AllocatePort(handle string, port int) (int, error)
 	ReleaseAllPorts(handle string) error
+}
+type PortMapEntry struct {
+	HostPort      uint32 `json:"hostPort"`
+	ContainerPort uint32 `json:"containerPort"`
+	Protocol      string `json:"protocol"`
+	HostIP        string `json:"hostIP,omitempty"`
+}
+
+type IPMasqEntry struct {
+	External    string `json:"external,omitempty"`
+	Destination string `json:"destination,omitempty"`
+	Protocol    string `json:"protocol"`
+	Description string `json:"description,omitempty"`
 }
 
 type Manager struct {
@@ -70,12 +85,6 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 	}
 
 	mappedPorts := []garden.PortMapping{}
-	type PortMapEntry struct {
-		HostPort      uint32 `json:"hostPort"`
-		ContainerPort uint32 `json:"containerPort"`
-		Protocol      string `json:"protocol"`
-		HostIP        string `json:"hostIP,omitempty"`
-	}
 	mPorts := []PortMapEntry{}
 	for i := range inputs.NetIn {
 		if inputs.NetIn[i].HostPort == 0 {
@@ -99,12 +108,32 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 
 	}
 
+	cmd := exec.Command("sh", "-c", "ip route get 1.1.1.1 | grep -oP 'src \\K\\S+'")
+	ip, err := cmd.CombinedOutput()
+	if err != nil {
+		return nil, fmt.Errorf("Cannot find external IP: %s", err)
+	}
+	ipMasqs := []IPMasqEntry{IPMasqEntry{
+		External:    fmt.Sprintf("%s:5000-5010", bytes.Trim(ip, "\n")),
+		Destination: "0.0.0.0/0",
+		Protocol:    "tcp",
+		Description: "default-rule",
+	},
+		IPMasqEntry{
+			External:    fmt.Sprintf("%s:6000-6020", bytes.Trim(ip, "\n")),
+			Destination: "8.8.8.8/32",
+			Protocol:    "udp",
+			Description: "default-rule",
+		},
+	}
+
 	result, err := m.CNIController.Up(
 		bindMountPath,
 		containerHandle,
 		inputs.Properties,
 		map[string]interface{}{
 			"portMappings": mPorts,
+			"masqEntries":  ipMasqs,
 			"netOutRules":  inputs.NetOut,
 		},
 	)

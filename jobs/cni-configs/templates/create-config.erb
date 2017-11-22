@@ -32,15 +32,23 @@ cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
         }
     },
     {
+      "type":"ipmasq",
+      "tag":"CNI-SNAT-X",
+      "capabilities": {"masqEntries": true}
+    },
+    {
       "type": "portmap",
       "capabilities": {"portMappings": true},
       "snat": false
-      },
+    },
     {
-      "type":"diktyo",
+      "type":"noop",
       "debug":true,
-      "capabilities": {"portMappings": true},
-      "debugDir": "/tmp/net-debug"
+      "capabilities": {
+           "portMappings": true,
+           "masqEntries": true
+      },
+      "debugDir": "/var/vcap/cni-configs/net-debug"
     }
   ]
 }
