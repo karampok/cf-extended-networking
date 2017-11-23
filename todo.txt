@@ -1,10 +1,5 @@
-DELETE is not working for the IPMasq because down is not providing the RuntimeConfig
-0. create  silk lite
-
-1. Use diktyo to spin up containers
-  - use chain #OK
-  - enable debug #ok
-  - get the ip subnet from silk-daemon #ok
+- check the default route
+- check the consul dns resolution
 
 `ip route get 1.1.1.1 | grep -oP 'src \K\S+'`
 `curl  --cacert certs/ca.crt --key certs/client.key --cert certs/client.crt https://silkcontroller:4103/leases| python -m json.tool`
