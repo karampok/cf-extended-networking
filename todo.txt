@@ -1,5 +1,17 @@
+Next:
+- plugin to register to consul something
+- Propaget metadata
+- run the smoke tests (https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/test/smoke)
 - check the default route
-- check the consul dns resolution
+- cf plugin setup
+- agent or ssh directly (check kube-router)
+- second IP on the diego cell
+- app to do all (port scanning, dns )
+
+
+
+
+
 
 `ip route get 1.1.1.1 | grep -oP 'src \K\S+'`
 `curl  --cacert certs/ca.crt --key certs/client.key --cert certs/client.crt https://silkcontroller:4103/leases| python -m json.tool`

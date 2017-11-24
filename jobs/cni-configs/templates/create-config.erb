@@ -42,13 +42,20 @@ cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
       "snat": false
     },
     {
+      "type":"registerDNS",
+      "plugin":"/var/vcap/packages/cni-plugins/bin/consul-cli",
+      "app_id_key":"app_id",
+      "capabilities": {"metadata": true}
+    },
+    {
       "type":"noop",
       "debug":true,
       "capabilities": {
            "portMappings": true,
+           "metadata": true,
            "masqEntries": true
       },
-      "debugDir": "/var/vcap/cni-configs/net-debug"
+      "debugDir": "/var/vcap/data/cni-configs/net-debug"
     }
   ]
 }

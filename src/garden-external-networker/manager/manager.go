@@ -134,6 +134,7 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 		map[string]interface{}{
 			"portMappings": mPorts,
 			"masqEntries":  ipMasqs,
+			"metadata":     inputs.Properties,
 			"netOutRules":  inputs.NetOut,
 		},
 	)
