@@ -25,11 +25,11 @@
 - type: remove
   path: /instance_groups/name=api/jobs/name=consul_agent/properties/consul/agent/services/policy-server-internal
 
-- type: remove
-  path: /variables/name=network_policy_database_password?
+# - type: remove
+#   path: /variables/name=network_policy_database_password?
 
-- type: remove
-  path: /variables/name=network_connectivity_database_password?
+# - type: remove
+#   path: /variables/name=network_connectivity_database_password?
 
 # Remove use-external-dbs ops file variables
 - type: remove

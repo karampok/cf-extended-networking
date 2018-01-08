@@ -1,12 +1,12 @@
 Next:
-- plugin to register to consul something
-- Propaget metadata
+- redeploy should work (mynet ip error-drain script) (redeploy cf only recreating diego cells)
 - run the smoke tests (https://github.com/cloudfoundry/cf-networking-release/tree/develop/src/test/smoke)
-- check the default route
-- cf plugin setup
+- check the default route (build a plugin that takes care the rooting) (implement the ASG in blackholes)
+- cf plugin (create a simple plugin)
 - agent or ssh directly (check kube-router)
 - second IP on the diego cell
 - app to do all (port scanning, dns )
+- Propaget metadata
 
 
 
@@ -31,3 +31,8 @@ throw
 Sends "net unreachable".
 
 https://banck.net/2017/03/deploying-cloud-foundry-virtualbox-using-bosh-cli-v2/
+export CF_TARGET=https://
+export CF_EMAIL=
+export CF_PASSWORD=
+cf login -a  ${CF_TARGET} -u ${CF_EMAIL} -p ${CF_PASSWORD}
+cf login -a https://api.bosh-lite.com --skip-ssl-validation -u admin -p $(bosh interpolate ~/deployments/multi-lite/cf-vars.yml --path /cf_admin_password)

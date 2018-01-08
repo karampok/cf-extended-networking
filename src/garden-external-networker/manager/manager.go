@@ -1,13 +1,16 @@
 package manager
 
 import (
+	"bufio"
 	"bytes"
 	"encoding/json"
 	"errors"
 	"fmt"
 	"io"
+	"os"
 	"os/exec"
 	"path/filepath"
+	"strings"
 
 	"code.cloudfoundry.org/garden"
 	"github.com/containernetworking/cni/pkg/types"
@@ -113,14 +116,34 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 	if err != nil {
 		return nil, fmt.Errorf("Cannot find external IP: %s", err)
 	}
+
+	masqMap := make(map[string]string)
+	file, err := os.Open("/var/vcap/data/cni-configs/masqrules.config")
+	if err != nil {
+		return nil, err
+	}
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		v := strings.Split(scanner.Text(), "=")
+		masqMap[v[0]] = v[1] //TODO. insecure stuff
+	}
+
+	srcPort := "5000:5100"
+	if spaceID, ok := inputs.Properties["space_id"]; ok {
+		if v, ok := masqMap[spaceID.(string)]; ok {
+			srcPort = v
+		}
+	}
 	ipMasqs := []IPMasqEntry{IPMasqEntry{
-		External:    fmt.Sprintf("%s:5000-5010", bytes.Trim(ip, "\n")),
+		External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
 		Destination: "0.0.0.0/0",
 		Protocol:    "tcp",
 		Description: "default-rule",
 	},
 		IPMasqEntry{
-			External:    fmt.Sprintf("%s:6000-6020", bytes.Trim(ip, "\n")),
+			External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
 			Destination: "8.8.8.8/32",
 			Protocol:    "udp",
 			Description: "default-rule",
