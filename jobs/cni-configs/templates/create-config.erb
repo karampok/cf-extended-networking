@@ -7,6 +7,7 @@ if [ -z $opt ]; then
   exit 1
 fi
 
+#this is a comment
 SUBNET="${opt//\"}"
 cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
   {
@@ -17,7 +18,7 @@ cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
         "type": "bridge",
         "bridge": "mynet0",
         "isGateway": true,
-        "ipMasq": false,
+        "ipMasq": true,
         "hairpinMode": false,
         "ipam": {
             "type": "host-local",
@@ -32,22 +33,17 @@ cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
         }
     },
     {
+      "type": "portmap",
+      "capabilities": {"portMappings": true},
+      "snat": false
+      },
+    {
       "type":"ipmasq",
       "tag":"CNI-SNAT-X",
       "capabilities": {"masqEntries": true}
     },
-    {
-      "type": "portmap",
-      "capabilities": {"portMappings": true},
-      "snat": false
-    },
-    {
-      "type":"registerDNS",
-      "plugin":"/var/vcap/packages/cni-plugins/bin/consul-cli",
-      "app_id_key":"app_id",
-      "capabilities": {"metadata": true}
-    },
-    {
+
+      {
       "type":"noop",
       "debug":true,
       "capabilities": {
@@ -64,4 +60,5 @@ EOF
 
 cat > /var/vcap/data/cni-configs/masqrules.config <<EOF
 97cec793-4aff-4df8-9e14-ed3ccd16956c=7000-7100
+0e3b5ec8-1761-476b-81ea-acafa91833c7=8000-9000
 EOF

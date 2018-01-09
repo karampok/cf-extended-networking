@@ -130,21 +130,24 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 		masqMap[v[0]] = v[1] //TODO. insecure stuff
 	}
 
-	srcPort := "5000:5100"
+	srcPort := "5000-5100"
 	if spaceID, ok := inputs.Properties["space_id"]; ok {
 		if v, ok := masqMap[spaceID.(string)]; ok {
 			srcPort = v
 		}
 	}
-	ipMasqs := []IPMasqEntry{IPMasqEntry{
-		External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
-		Destination: "0.0.0.0/0",
-		Protocol:    "tcp",
-		Description: "default-rule",
-	},
+
+	//TODO. read from a config
+	ipMasqs := []IPMasqEntry{
 		IPMasqEntry{
 			External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
-			Destination: "8.8.8.8/32",
+			Destination: "0.0.0.0/0",
+			Protocol:    "tcp",
+			Description: "default-rule",
+		},
+		IPMasqEntry{
+			External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
+			Destination: "1.2.3.4/32",
 			Protocol:    "udp",
 			Description: "default-rule",
 		},

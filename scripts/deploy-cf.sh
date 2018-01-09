@@ -27,6 +27,9 @@ bosh -n -d cf deploy --no-redact \
   "$cf_deployment"/cf-deployment.yml
 
 
+  #-o ops/disable-cf-networking.ops.yml \
+  #-o ops/enable-cf-extended-networking.ops.yml \
+  #-o ops/local-release.ops.yml \
   #-o ~/workspace/cf-deployment/operations/experimental/use-bosh-dns-for-containers.yml \
   # -o ~/workspace/service-discovery-release/opsfiles/opsfile.yml \
 
