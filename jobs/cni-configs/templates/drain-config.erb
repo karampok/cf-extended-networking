@@ -1,0 +1,6 @@
+# clean up file when monit stop
+rm /var/vcap/data/cni-configs/chained.conflist || true
+rm /var/vcap/data/cni-configs/masqrules.config || true
+
+echo 0 # ok to exit; do not wait for anything
+exit 0

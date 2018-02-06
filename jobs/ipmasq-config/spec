@@ -1,0 +1,14 @@
+---
+name: ipmasq-config
+
+templates:
+  ipmasq-config.erb: confs/mapping
+
+packages: []
+
+properties:
+  mapping:
+    description: "Here is the mapping for the spaces/portrange."
+    example: |
+      - guidA:6000-7000
+      - guidB:7000-8000

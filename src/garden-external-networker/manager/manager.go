@@ -131,25 +131,26 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 	}
 
 	srcPort := "5000-5100"
+	description := "default-rule"
 	if spaceID, ok := inputs.Properties["space_id"]; ok {
 		if v, ok := masqMap[spaceID.(string)]; ok {
 			srcPort = v
+			description = "modified behavior"
 		}
 	}
 
-	//TODO. read from a config
 	ipMasqs := []IPMasqEntry{
+		IPMasqEntry{
+			External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
+			Destination: "1.2.3.4/32",
+			Protocol:    "tcp",
+			Description: description,
+		},
 		IPMasqEntry{
 			External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
 			Destination: "0.0.0.0/0",
 			Protocol:    "tcp",
-			Description: "default-rule",
-		},
-		IPMasqEntry{
-			External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
-			Destination: "1.2.3.4/32",
-			Protocol:    "udp",
-			Description: "default-rule",
+			Description: description,
 		},
 	}
 
