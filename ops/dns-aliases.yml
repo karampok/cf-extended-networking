@@ -1,22 +1,17 @@
 - type: replace
   path: /releases/-
   value:
-    name: bosh-dns-aliases
-    version: 0.0.1
-    url: https://bosh.io/d/github.com/cloudfoundry/bosh-dns-aliases-release?v=0.0.1
-    sha1: 88a2381f97ebdd94eb88907634965aa1d7957348
+    name: bosh-dns
+    version: 0.2.0
+    url: https://bosh.io/d/github.com/cloudfoundry/bosh-dns-release?v=0.2.0
+    sha: 9231b7c7d2f6aa85e0cb77fdeef7add54fdb3f1a
 
 - type: replace
   path: /instance_groups/name=diego-cell/jobs/-
   value:
-    release: bosh-dns-aliases
-    name: bosh-dns-aliases
+    release: bosh-dns
+    name: bosh-dns
     properties:
       aliases:
-        - domain: silkcontroller
-          targets:
-          - query: "*"
-            instance_group: singleton-database
-            deployment: ((deployment))
-            network: ((network))
-            domain: bosh
+        silkcontroller:
+          - "*.singleton-database.lite.silk-lite.bosh"

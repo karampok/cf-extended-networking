@@ -3,7 +3,6 @@ name: cni-configs
 
 templates:
   create-config.erb: bin/create-config
-  drain-config.erb: bin/drain
 
 packages:
   - cni-plugins
