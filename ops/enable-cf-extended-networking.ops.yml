@@ -9,10 +9,6 @@
   value: /var/vcap/packages/garden-net/bin/garden-external-networker
 
 - type: replace
-  path: /instance_groups/name=diego-cell/instances
-  value: 1
-
-- type: replace
   path: /instance_groups/name=diego-cell/jobs/name=garden/properties/garden/network_plugin_extra_args?
   value: ["--configFile","/var/vcap/jobs/garden-net/config/adapter.json"]
 
@@ -31,3 +27,7 @@
   value:
     name: cni-configs
     release: cf-extended-networking
+
+- type: replace
+  path: /instance_groups/name=diego-cell/instances
+  value: 1

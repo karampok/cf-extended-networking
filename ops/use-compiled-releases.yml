@@ -1,42 +1,45 @@
 - path: /releases/name=cf-mysql/url
   type: replace
-  value: https://storage.googleapis.com/cf-deployment-compiled-releases/cf-mysql-36.8.0-ubuntu-trusty-3468.5-20171107-013212-236937877.tgz
+  value: https://storage.googleapis.com/cf-deployment-compiled-releases/cf-mysql-36.10.0-ubuntu-trusty-3541.2-20180209-192425-36125387.tgz
 - path: /releases/name=cf-mysql/version
   type: replace
-  value: 36.8.0
+  value: 36.10.0
 - path: /releases/name=cf-mysql/sha1
   type: replace
-  value: 5b1e09226d03182a92ad72327c70a65d45a9f3e4
+  value: 033d3f9d686e82baef5f02fa1703ec648431ac48
 - path: /releases/name=cf-networking/url
   type: replace
-  value: https://storage.googleapis.com/cf-deployment-compiled-releases/cf-networking-1.8.1-ubuntu-trusty-3468.5-20171107-010630-062063701.tgz
+  value: https://storage.googleapis.com/cf-deployment-compiled-releases/cf-networking-1.10.0-ubuntu-trusty-3541.2-20180209-185501-9626994.tgz
 - path: /releases/name=cf-networking/version
   type: replace
-  value: 1.8.1
+  value: 1.10.0
 - path: /releases/name=cf-networking/sha1
   type: replace
-  value: 5dd15c7658f7262d327aa8467fbed46148e4a31c
+  value: 99d3f8ef3581e651e77c007da8092958008c6a6d
 - path: /releases/name=garden-runc/url
   type: replace
-  value: https://storage.googleapis.com/cf-deployment-compiled-releases/garden-runc-1.9.6-ubuntu-trusty-3468.5-20171107-180419-135350911.tgz
+  value: https://storage.googleapis.com/cf-deployment-compiled-releases/garden-runc-1.11.1-ubuntu-trusty-3541.2-20180209-185846-100883822.tgz
 - path: /releases/name=garden-runc/version
   type: replace
-  value: 1.9.6
+  value: 1.11.1
 - path: /releases/name=garden-runc/sha1
   type: replace
-  value: 4958d34100efd45f8fe0c2ab47ea1bdcc7052fb2
+  value: 298ec13b7eaab9fb8bf5cd7f4a7165aa7bd08b8f
 - path: /releases/name=cf-mysql/stemcell?
   type: replace
   value:
     os: ubuntu-trusty
-    version: "3468.5"
+    version: "3541.2"
 - path: /releases/name=cf-networking/stemcell?
   type: replace
   value:
     os: ubuntu-trusty
-    version: "3468.5"
+    version: "3541.2"
 - path: /releases/name=garden-runc/stemcell?
   type: replace
   value:
     os: ubuntu-trusty
-    version: "3468.5"
+    version: "3541.2"
+- path: /stemcells/alias=default/version
+  type: replace
+  value: "3541.2"
