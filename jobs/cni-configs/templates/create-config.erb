@@ -1,15 +1,6 @@
 #!/bin/bash
 
 set -eu
-#mkdir -p /var/vcap/data/cni-configs
-#opt=$( curl -Lks  127.0.0.1:23954| python -m json.tool |grep overlay_subnet|awk  '{print $2}'  )
-#if [ -z $opt ]; then
-#  exit 1
-#fi
-#
-#this is a comment
-#SUBNET="${opt//\"}"
-#cp /var/vcap/packages/cni/bin/silk-cni /var/vcap/packages/cni-plugins/bin/silk-cni
 SUBNET="10.200.$(hostname -I | cut -d' ' -f1 | cut -d'.' -f4).0/24"
 cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
   {
@@ -57,10 +48,3 @@ cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
   ]
 }
 EOF
-
-
-cat > /var/vcap/data/cni-configs/masqrules.config <<EOF
-97cec793-4aff-4df8-9e14-ed3ccd16956c=7000-7100
-6dafd282-3a10-45df-a38e-5b4470208844=5000-5100
-EOF
-

@@ -118,7 +118,7 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 	}
 
 	masqMap := make(map[string]string)
-	file, err := os.Open("/var/vcap/data/cni-configs/masqrules.config")
+	file, err := os.Open("/var/vcap/jobs/cni-configs/config/masqrules.config")
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +130,7 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 		masqMap[v[0]] = v[1] //TODO. insecure stuff
 	}
 
-	srcPort := "5000-5100"
+	srcPort := "9000-9100"
 	description := "default-rule"
 	if spaceID, ok := inputs.Properties["space_id"]; ok {
 		if v, ok := masqMap[spaceID.(string)]; ok {

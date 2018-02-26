@@ -3,6 +3,7 @@ name: cni-configs
 
 templates:
   create-config.erb: bin/create-config
+  masqrules.config: config/masqrules.config
 
 packages:
   - cni-plugins
