@@ -1,0 +1,11 @@
+#! /bin/bash
+
+rm -f /var/vcap/data/cni-configs/chained.conflist || true
+
+GW="10.200.$(ip route get 8.8.8.8 |grep src |cut -d ' ' -f8 | cut -d' ' -f1 | cut -d'.' -f4).1"
+iptables -t nat -I PREROUTING -p udp  -d "$GW" --dport 53 -j DNAT --to-destination 127.0.0.1:53
+sysctl -w net.ipv4.conf.mynet0.route_localnet=1
+for i in {1..254};
+do
+ ip route add 10.200.$i.0/24 via 10.244.0.$i || true
+done

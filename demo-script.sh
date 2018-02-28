@@ -1,4 +1,7 @@
-
+# Show cf 
+bosh vms
+cf target
+cf spaces
 
 # Clean up
 rm  ./jobs/cni-configs/templates/ipmasq.config
@@ -6,8 +9,8 @@ rm  ./jobs/cni-configs/templates/ipmasq.config
 cf t -s dev && cf delete db-dev -r -f
 cf t -s prod && cf delete db-prod -r -f
 
-#cf delete-space prod -f
-#cf delete-space dev -f
+cf delete-space prod -f
+cf delete-space dev -f
 
 
 # Create spaces and get guids
@@ -29,8 +32,22 @@ Deploy CF with local cf-extended-networking release
 
 # Push apps
 
-cf t -s prod && cf push db-prod -o cloudfoundry/test-app && cf ssh db-prod -c 'wget http://ipinfo.io -q -O -'
-cf t -s prod && cf ssh db-prod -c 'wget http://ipinfo.io -q -O -'
+cf push db-prod -n db-prod  -o karampok/db-app -i 1 --no-start
+cf set-env db-prod APP_NAME PROD-APP
+cf set-env db-prod DB_URL "${DB_URL}"
+cf start db-prod
+cf ssh db-prod -c 'wget http://ipinfo.io -q -O -'
+
+
+cf push db-dev -n db-dev  -o karampok/db-app -i 1 --no-start
+cf set-env db-dev APP_NAME DEV-APP
+cf set-env db-dev DB_URL "${DB_URL}"
+cf start db-dev
+cf ssh db-dev -c 'wget http://ipinfo.io -q -O -'
+
+
+
+cf t -s prod && cf push db-prod -n db-prod  -o karampok/db-app -i 1
 cf t -s dev && cf push db-dev -o cloudfoundry/test-app && cf ssh db-dev -c 'wget http://ipinfo.io -q -O -'
 cf t -s dev && cf ssh db-dev -c 'wget http://ipinfo.io -q -O -'
 ```

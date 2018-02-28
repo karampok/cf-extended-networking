@@ -1,7 +1,8 @@
 #!/bin/bash
 
 set -eu
-SUBNET="10.200.$(hostname -I | cut -d' ' -f1 | cut -d'.' -f4).0/24"
+SUBNET="10.200.$(ip route get 8.8.8.8 |grep src |cut -d ' ' -f8 | cut -d' ' -f1 | cut -d'.' -f4).0/24"
+GW="10.200.$(ip route get 8.8.8.8 |grep src |cut -d ' ' -f8 | cut -d' ' -f1 | cut -d'.' -f4).1"
 cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
   {
   "cniVersion": "0.3.1",
@@ -22,7 +23,8 @@ cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
          "dataDir": "/run/ipam-out-net"
         },
         "dns": {
-          "nameservers": [ "8.8.8.8" ]
+          "nameservers": [ "$GW",  "8.8.8.8" ],
+          "search": ["service.cf.internal"]
         }
     },
     {
@@ -31,19 +33,25 @@ cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
       "capabilities": {"masqEntries": true}
     },
     {
-      "type": "portmap",
-      "capabilities": {"portMappings": true},
-      "snat": false
-      },
-      {
-      "type":"noop",
-      "debug":true,
-      "capabilities": {
-           "portMappings": true,
-           "metadata": true,
-           "masqEntries": true
-      },
-      "debugDir": "/var/vcap/data/cni-configs/net-debug"
+     "type": "portmap",
+     "capabilities": {"portMappings": true},
+     "snat": false
+     },
+     {
+       "type":"registerDNS",
+       "plugin":"/var/vcap/packages/cni-plugins/bin/consul-cli",
+       "app_id_key":"app_id",
+       "capabilities": {"metadata": true}
+     },
+     {
+     "type":"noop",
+     "debug":true,
+     "capabilities": {
+          "portMappings": true,
+          "metadata": true,
+          "masqEntries": true
+     },
+     "debugDir": "/var/vcap/data/cni-configs/net-debug"
     }
   ]
 }

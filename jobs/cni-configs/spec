@@ -4,6 +4,7 @@ name: cni-configs
 templates:
   create-config.erb: bin/create-config
   masqrules.config: config/masqrules.config
+  pre-start: bin/pre-start
 
 packages:
   - cni-plugins
