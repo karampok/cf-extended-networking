@@ -71,3 +71,7 @@ cf t -o o -s dev
 cf t -o o -s prod
 
 cf api api.bosh-lite.com --skip-ssl-validation && cf auth admin  <passwd>
+
+aws ec2 describe-instances
+/Users/taakako1/workspace/bosh-devground/environments/taakako1-aws/bbl aws ec2 modify-instance-attribute --instance-id i-0210c87a2789e779f
+/Users/taakako1/workspace/bosh-devground/environments/taakako1-aws/bbl aws ec2 modify-instance-attribute --instance-id i-0210c87a2789e779f  --no-source-dest-check

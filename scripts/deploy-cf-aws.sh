@@ -18,7 +18,14 @@ bosh -n -d cf deploy --no-redact \
   "$@" \
   "$cf_deployment"/cf-deployment.yml
 
+  export CF_TARGET=https://api.cf.karampok.me
+  export CF_EMAIL=admin
+  export CF_PASSWORD=$(bosh int "${DEPLOYMENT_DIR}/cf-vars.yml" --path /cf_admin_password)
 
+echo " cf login -a  ${CF_TARGET} -u ${CF_EMAIL} -p ${CF_PASSWORD} --skip-ssl-validation"
+echo "cf create-org o && cf t -o o && cf create-space s && cf t -o o -s s"
+echo "cf enable-feature-flag diego_docker"
+echo "cf push test-app -o cloudfoundry/test-app -i 2"
   #-o ops/enable-cf-extended-networking.ops.yml \
   #-o ops/local-release.ops.yml \
   #-o ~/workspace/cf-deployment/operations/experimental/use-bosh-dns-for-containers.yml \
