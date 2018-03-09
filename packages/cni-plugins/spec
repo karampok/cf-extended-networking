@@ -9,4 +9,5 @@ files:
   - github.com/containernetworking/plugins/**/*
   - github.com/containernetworking/cni/**/*
   - github.com/karampok/diktyo/**/*.go
+  - golang.org/x/sys/unix/**/*
   - code.cloudfoundry.org/silk/**/*.go

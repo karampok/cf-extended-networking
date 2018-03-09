@@ -11,9 +11,10 @@ export PATH=$GOROOT/bin:$GOPATH/bin:$PATH
 go install github.com/containernetworking/plugins/plugins/main/bridge
 go install github.com/containernetworking/plugins/plugins/ipam/host-local
 go install github.com/containernetworking/plugins/plugins/meta/portmap
-go install github.com/karampok/diktyo/plugins/noop
+go install github.com/karampok/diktyo/plugins/iproute
 go install github.com/karampok/diktyo/plugins/ipmasq
 go install github.com/karampok/diktyo/plugins/registerDNS
+go install github.com/karampok/diktyo/plugins/noop
 
 tar xvf consul-cli_0.3.1_linux_amd64.tar.gz
 cp -a consul-cli_0.3.1_linux_amd64/consul-cli "${BOSH_INSTALL_TARGET:?}/bin/consul-cli"

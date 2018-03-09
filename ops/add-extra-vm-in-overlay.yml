@@ -1,0 +1,14 @@
+---
+- type: replace
+  path: /instance_groups/name=vpn-cell?
+  value:
+    name: vpn-cell
+    azs: [z1]
+    instances: 1
+    vm_type: small
+    stemcell: default
+    networks:
+    - name: default
+    jobs:
+    - name: cni-configs
+      release: cf-extended-networking

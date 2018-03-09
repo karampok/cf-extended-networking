@@ -48,6 +48,12 @@ type IPMasqEntry struct {
 	Description string `json:"description,omitempty"`
 }
 
+type RouteEntry struct {
+	Destination string `json:"destination,omitempty"`
+	Gateway     string `json:"gateway,omitempty"`
+	Description string `json:"description,omitempty"`
+}
+
 type Manager struct {
 	Logger        io.Writer
 	CNIController cniController
@@ -154,6 +160,19 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 		},
 	}
 
+	routeEntries := []RouteEntry{
+		RouteEntry{
+			Destination: "192.168.0.0/24",
+			Gateway:     "drop",
+			Description: "VPN network",
+		},
+		// RouteEntry{
+		// 	Destination: "192.168.0.0/24",
+		// 	Gateway:     "10.200.145.1",
+		// 	Description: "VPN network",
+		// },
+	}
+
 	result, err := m.CNIController.Up(
 		bindMountPath,
 		containerHandle,
@@ -161,6 +180,7 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 		map[string]interface{}{
 			"portMappings": mPorts,
 			"masqEntries":  ipMasqs,
+			"routeEntries": routeEntries,
 			"metadata":     inputs.Properties,
 			"netOutRules":  inputs.NetOut,
 		},

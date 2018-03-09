@@ -10,10 +10,11 @@ ip link add name mynet0 type bridge || true
 ip addr add "$GW"/24 dev mynet0 || true
 ip link set dev mynet0 up || true
 sysctl -w net.ipv4.conf.mynet0.route_localnet=1 || true
+
 # aws ec2 modify-instance-attribute --instance-id i-0aeae0f94066e864e  --no-source-dest-check ?
-# for i in {15..25};
-# do
-#   #10.200.19.0/24 via 10.0.16.19 dev eth0
-#  ip route add 10.200.$i.0/24 via $UNDERLAY.$i || true
-# done
+for i in {17..20};
+do
+  #10.200.19.0/24 via 10.0.16.19 dev eth0
+ ip route add 10.200.$i.0/24 via $UNDERLAY.$i || true
+done
 

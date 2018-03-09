@@ -8,7 +8,7 @@ cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
   "cniVersion": "0.3.1",
   "name": "mynet",
   "plugins": [
-     {
+    {
         "type": "bridge",
         "bridge": "mynet0",
         "isGateway": true,
@@ -28,29 +28,33 @@ cat > /var/vcap/data/cni-configs/chained.conflist <<EOF
         }
     },
     {
+     "type": "portmap",
+     "capabilities": {"portMappings": true},
+     "snat": false
+    },
+    {
       "type":"ipmasq",
       "tag":"CNI-SNAT-X",
       "capabilities": {"masqEntries": true}
     },
     {
-     "type": "portmap",
-     "capabilities": {"portMappings": true},
-     "snat": false
-     },
-     {
+      "type":"iproute",
+      "capabilities": {"routeEntries": true}
+    },
+    {
        "type":"registerDNS",
        "plugin":"/var/vcap/packages/cni-plugins/bin/consul-cli",
        "app_id_key":"app_id",
        "capabilities": {"metadata": true}
-     },
-     {
+    },
+    {
      "type":"noop",
      "debug":true,
      "capabilities": {
           "portMappings": true,
           "metadata": true,
           "masqEntries": true
-     },
+      },
      "debugDir": "/var/vcap/data/cni-configs/net-debug"
     }
   ]
