@@ -1,8 +1,7 @@
-
-
 Deploy CF with local cf-extended-networking release
+
 ```
-./scripts/deploy-cf.sh
+./scripts/deploy-cf-[lite/aws].sh
 ```
 
 
@@ -12,7 +11,7 @@ cf api api.bosh-lite.com --skip-ssl-validation && cf auth admin  $pass
 cf create-org o && cf t -o o && cf create-space s && cf t -o o -s s
 ```
 
-### Push just an app
+### Push an app
 ```
 cf api api.bosh-lite.com --skip-ssl-validation && cf auth admin  <passwd>
 cf create-org o && cf t -o o && cf create-space s && cf t -o o -s s
@@ -20,7 +19,7 @@ cf enable-feature-flag diego_docker
 cf push test-app -o cloudfoundry/test-app -i 2
 ```
 
-### Demo just an app
+### Demo an app
 
 cf create-org o && cf t -o o &&
 cf create-space prod
