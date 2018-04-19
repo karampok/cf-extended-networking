@@ -1,0 +1,29 @@
+---
+- type: replace
+  path: /releases/-
+  value:
+    name: strongswan
+    version: latest
+
+- type: replace
+  path: /instance_groups/name=vpn-cell?
+  value:
+    name: vpn-cell
+    azs: [z1]
+    instances: 1
+    vm_type: small
+    stemcell: default
+    networks:
+    - name: default
+    jobs:
+    - name: cni-configs
+      release: cf-extended-networking
+    - name: strongswan
+      release: strongswan
+      properties:
+        strongswan:
+          tunnels:
+          - ip: main.karampok
+            secret: mustikoskwdikos # shared-key for the tunnel
+          local_subnet: 10.200.1.0/24
+          remote_subnet: 192.168.1.0/24

@@ -14,6 +14,9 @@
   path: /instance_groups/name=diego-cell/jobs/name=cni
 
 - type: remove
+  path: /instance_groups/name=diego-cell/jobs/name=silk-daemon
+
+- type: remove
   path: /instance_groups/name=api/jobs/name=policy-server
 
 - type: remove

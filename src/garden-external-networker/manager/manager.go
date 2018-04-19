@@ -48,6 +48,12 @@ type IPMasqEntry struct {
 	Description string `json:"description,omitempty"`
 }
 
+type RouteEntry struct {
+	Destination string `json:"destination,omitempty"`
+	Gateway     string `json:"gateway,omitempty"`
+	Description string `json:"description,omitempty"`
+}
+
 type Manager struct {
 	Logger        io.Writer
 	CNIController cniController
@@ -118,7 +124,7 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 	}
 
 	masqMap := make(map[string]string)
-	file, err := os.Open("/var/vcap/data/cni-configs/masqrules.config")
+	file, err := os.Open("/var/vcap/jobs/cni-configs/config/masqrules.config")
 	if err != nil {
 		return nil, err
 	}
@@ -130,27 +136,41 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 		masqMap[v[0]] = v[1] //TODO. insecure stuff
 	}
 
-	srcPort := "5000-5100"
+	srcPort := "9000-9100"
+	description := "default-rule"
 	if spaceID, ok := inputs.Properties["space_id"]; ok {
 		if v, ok := masqMap[spaceID.(string)]; ok {
 			srcPort = v
+			description = "modified behavior"
 		}
 	}
 
-	//TODO. read from a config
 	ipMasqs := []IPMasqEntry{
+		IPMasqEntry{
+			External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
+			Destination: "1.2.3.4/32",
+			Protocol:    "tcp",
+			Description: description,
+		},
 		IPMasqEntry{
 			External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
 			Destination: "0.0.0.0/0",
 			Protocol:    "tcp",
-			Description: "default-rule",
+			Description: description,
 		},
-		IPMasqEntry{
-			External:    fmt.Sprintf("%s:%s", bytes.Trim(ip, "\n"), srcPort),
-			Destination: "1.2.3.4/32",
-			Protocol:    "udp",
-			Description: "default-rule",
+	}
+
+	routeEntries := []RouteEntry{
+		RouteEntry{
+			Destination: "192.168.0.0/24",
+			Gateway:     "drop",
+			Description: "VPN network",
 		},
+		// RouteEntry{
+		// 	Destination: "192.168.0.0/24",
+		// 	Gateway:     "10.200.145.1",
+		// 	Description: "VPN network",
+		// },
 	}
 
 	result, err := m.CNIController.Up(
@@ -160,6 +180,7 @@ func (m *Manager) Up(containerHandle string, inputs UpInputs) (*UpOutputs, error
 		map[string]interface{}{
 			"portMappings": mPorts,
 			"masqEntries":  ipMasqs,
+			"routeEntries": routeEntries,
 			"metadata":     inputs.Properties,
 			"netOutRules":  inputs.NetOut,
 		},

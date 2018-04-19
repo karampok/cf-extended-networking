@@ -6,19 +6,22 @@ if [ ! -d "$cf_deployment" ]; then
   exit 1
 fi
 
-deployment_dir="deployments/multi-lite"
+deployment_dir="$HOME/workspace/deployments/bosh-lite/silk"
 mkdir -p "$deployment_dir"
 
-STEMCELL_VERSION=$(bosh int ~/workspace/cf-deployment/cf-deployment.yml --path /stemcells/alias=default/version)
-bosh ss --json|grep "$STEMCELL_VERSION" || bosh upload-stemcell https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent?v="$STEMCELL_VERSION"
+# STEMCELL_VERSION=$(bosh int ~/workspace/cf-deployment/cf-deployment.yml --path /stemcells/alias=default/version)
+# bosh ss --json|grep "$STEMCELL_VERSION" || bosh upload-stemcell https://bosh.io/d/stemcells/bosh-warden-boshlite-ubuntu-trusty-go_agent?v="$STEMCELL_VERSION"
+#
 bosh -n update-cloud-config ops/cloud-config-lite.yml
-bosh update-runtime-config -n ~/workspace/bosh-deployment/runtime-configs/dns.yml
+
 bosh -n -d silk-lite deploy \
   --vars-store "$deployment_dir/vars.yml" \
-  -l bosh-lite.vars.yml \
+  -l bosh-lite/vars.yml \
   -o ops/use-compiled-releases.yml \
-  -o ops/dns-aliases.yml \
+  -o ops/enable-bosh-dns.yml \
   -o ops/enable-cf-extended-networking.ops.yml \
   -o ops/local-release.ops.yml \
   "$@" \
-  silk-lite.yml
+  bosh-lite/silk.yml
+
+

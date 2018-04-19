@@ -16,3 +16,6 @@
 [submodule "src/github.com/mantl/consul-cli"]
 	path = src/github.com/mantl/consul-cli
 	url = https://github.com/mantl/consul-cli.git
+[submodule "src/code.cloudfoundry.org/silk"]
+	path = src/code.cloudfoundry.org/silk
+	url = https://github.com/cloudfoundry/silk.git

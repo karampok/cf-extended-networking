@@ -1,0 +1,9 @@
+- type: replace
+  path: /instance_groups/name=diego-cell/jobs/-
+  value:
+    name: ipmasq-config
+    release: cf-extended-networking
+    properties:
+      mapping:
+        - entry: "guidA:6000-7000"
+        - entry: "0e3b5ec8-1761-476b-81ea-acafa91833c7=8000-9000"

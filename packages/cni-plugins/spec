@@ -5,6 +5,9 @@ dependencies:
   - golang
 
 files:
+  - consul-cli_0.3.1_linux_amd64.tar.gz
   - github.com/containernetworking/plugins/**/*
   - github.com/containernetworking/cni/**/*
   - github.com/karampok/diktyo/**/*.go
+  - golang.org/x/sys/unix/**/*
+  - code.cloudfoundry.org/silk/**/*.go

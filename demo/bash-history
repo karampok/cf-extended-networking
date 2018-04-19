@@ -1,0 +1,515 @@
+#1522225608
+rm ./jobs/cni-configs/templates/masqrules.config
+#1522225621
+cf t -s dev && cf delete db-dev -r -f
+#1522225642
+cf t -s prod && cf delete db-prod -r -f
+#1522225662
+cf delete-space prod -f
+#1522225688
+cf delete-space dev -f
+#1522225887
+ssh mysql
+#1522226106
+clear
+#1522226363
+bosh vms
+#1522226490
+cf target
+#1522226511
+cf create-space prod
+#1522226618
+cf delete-space prod
+#1522226638
+# CF-Summit 2018 demo
+#1522227012
+bosh vms
+#1522227027
+cf target
+#1522227037
+clear
+#1522227048
+cf create-space prod
+#1522227071
+echo $(cf space prod --guid)=5000-5100
+#1522227085
+cf create-space dev
+#1522227107
+echo $(cf space dev --guid)=8000-8100
+#1522227137
+echo $(cf space prod --guid)=5000-5100 > ./jobs/cni-configs/templates/masqrules.config
+#1522227155
+echo $(cf space dev --guid)=8000-8100 >> ./jobs/cni-configs/templates/masqrules.config
+#1522227163
+cat jobs/cni-configs/templates/masqrules.config
+#1522227202
+cat jobs/cni-configs/templates/masqrules.config
+#1522227225
+clear
+#1522227235
+./scripts/deploy-cf-aws.sh 
+#1522227430
+cat scripts/deploy-cf-aws.sh 
+#1522227470
+exit
+#1522227474
+clear
+#1522227479
+cf t -o o -s prod
+#1522227502
+cf push db-prod -n db-prod -o karampok/db-app -i 2 --no-start
+#1522227527
+cf set-env db-prod DB_URL "${DB_URL}"
+#1522227546
+cf set-env db-prod APP_NAME PROD_APP
+#1522227559
+cf t -o -o -s dev
+#1522227564
+cf t -o o -s dev
+#1522227551
+cf start db-prod
+#1522227584
+cf push db-dev -n db-dev -o karampok/db-app -i 2 --no-start
+#1522227605
+cf set-env db-dev DB_URL "${DB_URL}"
+#1522227619
+cf set-env db-dev APP_NAME DEV-APP
+#1522227633
+cat .envrc |grep DB
+#1522227626
+cf start db-dev
+#1522227648
+clear
+#1522227676
+cf t -s prod && cf a
+#1522227737
+cf a
+#1522227747
+cf t -s dev
+#1522227749
+cf a
+#1522227794
+cf t -s prod && cf ssh db-prod -c 'ip r'
+#1522227823
+cf t -s prod && cf ssh db-prod -c 'wget -q http://ipinfo.io -O -'
+#1522227948
+bosh vms
+#1522228250
+cf t -s prod && cf ssh db-prod -c 'ip a'
+#1522228260
+cf t -s prod && cf ssh db-prod 
+#1522228363
+env
+#1522228367
+env|grep fzf
+#1522227271
+bosh ssh -d cf diego-cell/0
+#1522228484
+clear
+#1522228498
+vi bash-history 
+#1522228618
+rm ./jobs/cni-configs/templates/masqrules.config
+#1522228641
+cf t -s dev && cf delete db-dev -r -f
+#1522228665
+cf t -s prod && cf delete db-prod -r -f
+#1522228677
+cf delete-space prod
+#1522228684
+cf delete-space dev
+#1522228699
+cf t -o o -s s
+#1522228713
+vi bash-history 
+#1522228785
+vi scripts/deploy-cf-aws.sh 
+#1522228813
+clear
+#1522228965
+# CF-Summit 2018 demo
+#1522228969
+bosh vms
+#1522228981
+cf target 
+#1522228989
+cf spaces
+#1522228994
+clear
+#1522229005
+cf create-space prod
+#1522229010
+cf create-space dev
+#1522229017
+cf spaces
+#1522229039
+echo $(cf space prod --guid)=5000-5100 > ./jobs/cni-configs/templates/masqrules.config
+#1522229053
+echo $(cf space dev --guid)=8000-8100 >> ./jobs/cni-configs/templates/masqrules.config
+#1522229057
+cat jobs/cni-configs/templates/masqrules.config
+#1522229092
+cat  scripts/deploy-cf-aws.sh 
+#1522229245
+clear
+#1522229072
+./scripts/deploy-cf-aws.sh 
+#1522229273
+cf t -o o -s prod
+#1522229275
+cf a
+#1522229292
+cf push db-prod -n db-prod -o karampok/db-app -i 2 --no-start
+#1522229307
+cf set-env db-prod DB_URL "${DB_URL}"
+#1522229325
+cf set-env db-prod APP_NAME PROD-APP
+#1522229327
+cf a
+#1522229334
+cf start db-prod
+#1522229362
+cf t -s dev
+#1522229371
+cf push db-dev -n db-dev -o karampok/db-app -i 2 --no-start
+#1522229382
+cf set-env db-dev DB_URL "${DB_URL}"
+#1522229397
+cf set-env db-dev APP_NAME DEV-APP
+#1522229402
+cf start db-dev
+#1522229459
+cf t -s prod && cf ssh db-prod -c 'wget -q http://ipinfo.io -O -'
+#1522229480
+cf t -s dev && cf ssh db-dev -c 'wget -q http://ipinfo.io -O -'
+#1522229545
+clear
+#1522229569
+cf t -s prod && cf ssh db-prod -c 'ip r'
+#1522229214
+bosh ssh -d cf diego-cell/1
+#1522229861
+exit
+#1522229616
+cf t -s dev && cf ssh db-dev
+#1522230762
+exit
+#1522229598
+cf t -s prod && cf ssh db-prod 
+#1522230771
+clear
+#1522230780
+rm ./jobs/cni-configs/templates/masqrules.config
+#1522230791
+cf t -s prod && cf delete db-prod -r -f
+#1522230807
+cf t -s dev && cf delete db-dev -r -f
+#1522230819
+cf delete-space dev
+#1522230837
+cf delete-space prod
+#1522230857
+cf t -o o -s s
+#1522230996
+cf a
+#1522231134
+bosh ssh -d cf diego-cell/1
+#1523568616
+export HISTFILE=$(pwd)/demo/bash-history
+#1523568621
+asciinema -h
+#1523568644
+exit
+#1523568642
+asciinema rec cfsummit.cast
+#1523568651
+rm cfsummit.cast 
+#1523568653
+clear
+#1523568657
+export HISTFILE=$(pwd)/demo/bash-history
+#1523568666
+#asciinema rec cfsummit.cast
+#1523568668
+clear
+#1523568676
+cd pkg/dep/sources/https---github.com-hashicorp-consul/vendor/github.com/shirou
+#1523568679
+bosh vms
+#1523568721
+git co -
+#1523568728
+cd 
+#1523568731
+z cf-ex
+#1523568734
+clear
+#1523568737
+bosh vms
+#1523568761
+clear
+#1523568782
+ssh main
+#1523568863
+clear
+#1523568880
+bosh vms
+#1523568905
+clear
+#1523568908
+cf t
+#1523568916
+clear
+#1523568922
+cf create-space prod
+#1523568932
+cf create-space dev
+#1523568949
+echo $(cf space prod --guid)=5000-5100 > ./jobs/cni-configs/templates/masqrules.config
+#1523568967
+echo $(cf space dev --guid)=8000-8100 >> ./jobs/cni-configs/templates/masqrules.config
+#1523568974
+clear
+#1523568979
+cat jobs/cni-configs/templates/masqrules.config
+#1523569031
+cat scripts/deploy-cf-aws.sh 
+#1523569058
+clear
+#1523569010
+./scripts/deploy-cf-aws.sh 
+#1523569257
+cf t -o o -s prod
+#1523569271
+cf push db-prod -n db-prod -o karampok/db-app -i 2 --no-start
+#1523569284
+cf set-env db-prod DB_URL "${DB_URL}"
+#1523569297
+cf set-env db-prod APP_NAME PROD-APP
+#1523569306
+cf start db-prod
+#1523569325
+#1523569331
+cf t -o o -s dev
+#1523569338
+cf push db-dev -n db-dev -o karampok/db-app -i 2 --no-start
+#1523569348
+cf set-env db-dev DB_URL "${DB_URL}"
+#1523569355
+cf set-env db-dev APP_NAME DEV-APP
+#1523569361
+cf start db-prod
+#1523569364
+cf start db-dev
+#1523569419
+cf t -o o -s prod && cf ssh db-prod
+#1523569527
+cf t -o o -s prod && cf a
+#1523569544
+curl http://db-prod.cf.karampok.me
+#1523569432
+cf t  -o o -s dev && cf ssh db-dev
+#1523569558
+cf t  -o o -s dev && cf a
+#1523569567
+curl db-dev.cf.karampok.me
+#1523569207
+bosh ssh -d cf diego-cell/1
+#1523569833
+exit
+#1523569078
+bosh ssh -d cf diego-cell/0
+#1523569903
+exit
+#1523569656
+cf t  -o o -s dev && cf ssh db-dev
+#1523569906
+exit
+#1523569651
+cf t -o o -s prod && cf ssh db-prod
+#1523569910
+exit
+#1523569593
+ssh main
+#1523569912
+exit
+#1523568873
+tmux
+#1523569914
+exit
+#1523568870
+asciinema rec cfsummit.cast
+#1523569924
+clear
+#1523569929
+asciinema -h
+#1523569948
+time asciinema play -i 2.5  cfsummit.cast 
+#1523870059
+export HISTFILE=$(pwd)/bash-history
+#1523870061
+ls
+#1523870066
+tmux
+#1523870077
+exit
+#1523870106
+export HISTFILE=$(pwd)/bash-history
+#1523870109
+tmux
+#1523870138
+bosh vms
+#1523870162
+ls
+#1523870177
+bosh vms
+#1523870202
+exit
+#1523870206
+exit
+#1523870207
+clear
+#1523870208
+ls
+#1523870256
+bosh vms
+#1523870263
+cf target
+#1523870267
+cf a
+#1523870273
+cat clean-up.sh 
+#1523870285
+# cf t -s dev && cf delete db-dev -r -f
+#1523870286
+# cf t -s prod && cf delete db-prod -r -f
+#1523870291
+cf t -s prod && cf delete db-prod -r -f
+#1523870307
+cf a
+#1523870320
+cf t -s dev && cf delete db-dev -r -f
+#1523870329
+cf s
+#1523870332
+cf o
+#1523870336
+cf t
+#1523870343
+cf delete-space s
+#1523870354
+cf spaces
+#1523870513
+clear
+#1523870524
+rm ./jobs/cni-configs/templates/masqrules.config
+#1523870526
+clear
+#1523870539
+cf spaces
+#1523870548
+echo $(cf space prod --guid)=5000-5100 > ./jobs/cni-configs/templates/masqrules.config
+#1523870562
+cd ..
+#1523870565
+clear
+#1523870567
+cf spaces
+#1523870571
+echo $(cf space prod --guid)=5000-5100 > ./jobs/cni-configs/templates/masqrules.config
+#1523870576
+echo $(cf space dev --guid)=8000-8100 >> ./jobs/cni-configs/templates/masqrules.config
+#1523870599
+cat jobs/cni-configs/templates/masqrules.config
+#1523870608
+vi jobs/cni-configs/templates/masqrules.config
+#1523870632
+cat scripts/deploy-cf-aws.sh 
+#1523870647
+head ops/enable-cf-extended-networking.ops.yml 
+#1523870718
+cf t  -o o -s dev
+#1523870721
+cf t  -o o -s prod
+#1523870726
+cf push db-prod -n db-prod -o karampok/db-app -i 2 --no-start
+#1523870737
+cf set-env db-prod DB_URL "${DB_URL}"
+#1523870745
+cf set-env db-dev APP_NAME DEV-APP
+#1523870765
+cf set-env db-prod APP_NAME PROD-APP
+#1523870772
+cf start db-prod
+#1523870816
+vi demo/bash-history 
+#1523870835
+exit
+#1523870845
+cf set-env db-dev APP_NAME DEV-APP
+#1523870857
+cf push db-dev -n db-dev -o karampok/db-app -i 2 --no-start
+#1523870865
+cf set-env db-dev APP_NAME DEV-APP
+#1523870870
+cf set-env db-dev DB_URL "${DB_URL}"
+#1523870883
+cf start db-dev
+#1523870973
+cf t -s dev && cf ssh db-dev -c 'wget -s -q http://ipinfo.io -O -'
+#1523870983
+cf t -s dev && cf ssh db-dev -c 'wget  -q http://ipinfo.io -O -'
+#1523870996
+cf t -s prod && cf ssh db-prod -c 'wget -q http://ipinfo.io -O -'
+#1523871082
+ssh mariadb
+#1523871180
+curl db-prod.cf.karampok.me
+#1523870212
+nvim demo-notes.md 
+#1523871601
+bosh ssh -d cf diego-cell/1
+#1523871624
+exit
+#1523870657
+bosh ssh -d cf diego-cell/0
+#1523871656
+ls
+#1523871678
+ ls ~/dotfiles/config/tmuxcolordir
+#1523871693
+tmux source-file  ~/dotfiles/config/tmux/tmuxcolors-light.conf 
+#1523871697
+exit
+#1523871431
+cf t -s dev && cf ssh db-dev 
+#1523871701
+exit
+#1523871390
+cf t -o o -s prod && cf ssh db-prod
+#1523871716
+vi demo/clean-up.sh 
+#1523871735
+./demo/clean-up.sh 
+#1523871756
+exit
+#1523871100
+ssh main
+#1523872679
+ssh mysql
+#1523872693
+clear
+#1523872818
+git status
+#1523872822
+cd ..
+#1523872828
+git status
+#1523872834
+mv cfsummit.cast ~/
+#1523872836
+git status
+#1523872839
+git add -A
+#1523872845
+git st
